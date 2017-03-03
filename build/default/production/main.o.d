@@ -1,3 +1,6 @@
 build/default/production/main.o:  \
 main.c  \
-config.h 
+config.h  \
+pt.h  \
+lc.h  \
+lc-switch.h 

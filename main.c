@@ -1,4 +1,6 @@
 #include "config.h"
+#include "pt.h"
+#include <stdarg.h>
 //#include "pt_cornell_1_2_1.h"
 //#include "simplifiedSerial.h"
 //#include "feedback.h"
@@ -11,15 +13,7 @@
 //=============================================//
 // Protothread functions
 //=============================================//
-//static PT_THREAD (protothread_KangarooSerial(struct pt *pt)) {
-//    PT_BEGIN(pt);
-//    while(1) {
-//        incrementalPositionAndSpeed(LEFT_MOTOR, 1000, 500, PT_send_buffer);
-//        //PutSerialBuffer(pt);
-//    }
-//    PT_END(pt);
-//}
-//
+
 //static PT_THREAD (protothread_RoboclawSerial(struct pt *pt)) {
 //    PT_BEGIN(pt);
 //    while(1) {
