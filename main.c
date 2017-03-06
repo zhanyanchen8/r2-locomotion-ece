@@ -28,32 +28,34 @@
 //    } 
 //    PT_END(pt);
 //}
-
+void configUART();
 void configUART() {
+    // config for putty
+    
     // specify PPS group, signal, logical pin name
-    PPSInput (2, U2RX, RPB11); //Assign U2RX to pin RPB11 -- Physical pin 22 on 28 PDIP
-    PPSOutput(4, RPB10, U2TX); //Assign U2TX to pin RPB10 -- Physical pin 21 on 28 PDIP
+    PPSInput (2, U2RX, RPB8); //Assign U2RX to pin RPB11 -- Physical pin 17 on 28 PDIP
+    PPSOutput(4, RPB9, U2TX); //Assign U2TX to pin RPB10 -- Physical pin 18 on 28 PDIP
     // init the uart2
     UARTConfigure(UART2, UART_ENABLE_PINS_TX_RX_ONLY);
     UARTSetLineControl(UART2, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
     UARTSetDataRate(UART2, pb_clock, BAUDRATE);
     UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
     
-    mPORTBSetPinsDigitalIn(BIT_11);
-    mPORTBSetPinsDigitalOut(BIT_10);
+    mPORTBSetPinsDigitalIn(BIT_8);
+    mPORTBSetPinsDigitalOut(BIT_9);
     
     // config for PUTTY
     // specify PPS group, signal, logical pin name
-    PPSInput (3, U1RX, RPA4); //Assign U2RX to pin RPB11 -- Physical pin 12 on 28 PDIP
-    PPSOutput(1, RPB4, U1TX); //Assign U2TX to pin RPB10 -- Physical pin 11 on 28 PDIP
+    PPSInput (3, U1RX, RPB13); //Assign U2RX to pin RPB11 -- Physical pin 24 on 28 PDIP
+    PPSOutput(1, RPB15, U1TX); //Assign U2TX to pin RPB10 -- Physical pin 26 on 28 PDIP
     // init the uart2
     UARTConfigure(UART1, UART_ENABLE_PINS_TX_RX_ONLY);
     UARTSetLineControl(UART1, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
     UARTSetDataRate(UART1, pb_clock, BAUDRATE);
     UARTEnable(UART1, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
     
-    mPORTASetPinsDigitalIn(BIT_4);
-    mPORTBSetPinsDigitalOut(BIT_4);
+    mPORTBSetPinsDigitalIn(BIT_13);
+    mPORTBSetPinsDigitalOut(BIT_15);
 }
 
 int main(void) {
@@ -69,13 +71,9 @@ int main(void) {
     SYSTEMConfigPerformance(sys_clock);
     
     configUART();
-    char c = 210;
-    printf("%c", c);
     
-    while(!UARTTransmitterIsReady(UART1));
-    UARTSendDataByte(UART1, 'a');
-    while(!UARTTransmitterIsReady(UART1));
-    UARTSendDataByte(UART1, '\n');
+    while(!UARTTransmitterIsReady(UART2));
+    printf("Ready to receive commands.\n");
     
     const int MAXLENGTH = 5;
     char buffer[MAXLENGTH];
@@ -88,23 +86,23 @@ int main(void) {
     unsigned char cmd;
     int index = 0;
     while(1) {
-        while(!UARTReceivedDataIsAvailable(UART1));
-        char rx = UARTGetDataByte(UART1);
+        while(!UARTReceivedDataIsAvailable(UART2));
+        char rx = UARTGetDataByte(UART2);
 
         if(rx == 8) { // backspace
-            while(!UARTTransmitterIsReady(UART1));
-            UARTSendDataByte(UART1, 127);
+            while(!UARTTransmitterIsReady(UART2));
+            UARTSendDataByte(UART2, 127);
             
             if(index > 0) {
                 buffer[--index] = '\0';
             }
         }
         else if(rx == 13) {
-            while(!UARTTransmitterIsReady(UART1));
-            UARTSendDataByte(UART1, rx);
+            while(!UARTTransmitterIsReady(UART2));
+            UARTSendDataByte(UART2, rx);
             
-            while(!UARTTransmitterIsReady(UART1));
-            UARTSendDataByte(UART1, '\n');
+            while(!UARTTransmitterIsReady(UART2));
+            UARTSendDataByte(UART2, '\n');
             
             buffer[index++] = '\0';
             cmd = (unsigned char)atoi(buffer);
@@ -114,9 +112,8 @@ int main(void) {
                 //print(&cmd, 1);
             }
             else {
-                printf("%c", (char)cmd);
                 while(!UARTTransmitterIsReady(UART1));
-                UARTSendDataByte(UART1, 'd');
+                UARTSendDataByte(UART1, cmd);
             }
             
             
@@ -130,8 +127,8 @@ int main(void) {
                 // or character is NAN
             }
             else {
-                while(!UARTTransmitterIsReady(UART1));
-                UARTSendDataByte(UART1, rx);
+                while(!UARTTransmitterIsReady(UART2));
+                UARTSendDataByte(UART2, rx);
                 buffer[index++] = rx;
             }
         }
