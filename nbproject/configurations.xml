@@ -5,15 +5,13 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>config.h</itemPath>
-      <itemPath>pt_cornell_1_2_1.h</itemPath>
-      <itemPath>simplifiedSerial.h</itemPath>
-      <itemPath>feedback.h</itemPath>
       <itemPath>lc-addrlabels.h</itemPath>
       <itemPath>lc-switch.h</itemPath>
       <itemPath>lc.h</itemPath>
       <itemPath>pt-sem.h</itemPath>
       <itemPath>pt.h</itemPath>
       <itemPath>roboclawPacketSerial.h</itemPath>
+      <itemPath>hardwareConfig.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,9 +21,8 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>main.c</itemPath>
-      <itemPath>simplifiedSerial.c</itemPath>
-      <itemPath>feedback.c</itemPath>
-      <itemPath>roboclawSimpleSerial.c</itemPath>
+      <itemPath>hardwareConfig.c</itemPath>
+      <itemPath>pt.c</itemPath>
       <itemPath>roboclawPacketSerial.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -45,7 +42,7 @@
         <targetDevice>PIC32MX250F128B</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PKOBSKDEPlatformTool</platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>1.40</languageToolchainVersion>
         <platform>3</platform>
@@ -176,7 +173,7 @@
         <property key="save-temps" value="false"/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <item path="feedback.c" ex="true" overriding="false">
+      <item path="lc-addrlabels.h" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -190,7 +187,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="feedback.h" ex="true" overriding="false">
+      <item path="lc-switch.h" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -204,7 +201,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="pt_cornell_1_2_1.h" ex="true" overriding="false">
+      <item path="lc.h" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -218,7 +215,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="roboclawSimpleSerial.c" ex="true" overriding="false">
+      <item path="pt-sem.h" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -232,7 +229,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="simplifiedSerial.c" ex="true" overriding="false">
+      <item path="pt.c" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -246,7 +243,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="simplifiedSerial.h" ex="true" overriding="false">
+      <item path="pt.h" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>

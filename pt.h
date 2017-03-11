@@ -29,6 +29,7 @@
  * This file is part of the Contiki operating system.
  *
  * Author: Adam Dunkels <adam@sics.se>
+ * Modified by Manish Patel (using code from Bruce Land's pt_cornell_1_2_1.h
  *
  * $Id: pt.h,v 1.7 2006/10/02 07:52:56 adam Exp $
  */

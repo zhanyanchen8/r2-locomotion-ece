@@ -1,3 +1,5 @@
+#define _SUPPRESS_PLIB_WARNING 1
+#include <plib.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include "roboclawPacketSerial.h"
@@ -11,8 +13,92 @@
 #define TYPE_UINT32 4
 #define TYPE_INT32 5
 
-void sendCommand(char cmd, int numArgs, ...);
-uint16_t crc16(unsigned char *packet, int nBytes);
+void roboclawPacketSerialPuttyInterface() {
+    while(1) {
+        while(!UARTTransmitterIsReady(UART2));
+        printf("Ready to receive commands.\n");
+    
+        const int MAXLENGTH = 8;
+        char buffer[MAXLENGTH];
+
+        int i = 0;
+        for(i=0; i<MAXLENGTH; i++) {
+            buffer[i] = '\0';
+        }
+
+        unsigned char cmd;
+        int index = 0;
+        while(1) {
+            while(!UARTReceivedDataIsAvailable(UART2));
+            char rx = UARTGetDataByte(UART2);
+
+            if(rx == 8) { // backspace
+                // echo a delete character instead, since PUTTY executes backspace
+                // as "move back one position but do not delete the character"
+                while(!UARTTransmitterIsReady(UART2));
+                UARTSendDataByte(UART2, 127); 
+
+                if(index > 0) {
+                    buffer[--index] = '\0';
+                }
+            }
+            else if(rx == 13) {
+                while(!UARTTransmitterIsReady(UART2));
+                UARTSendDataByte(UART2, rx);
+
+                while(!UARTTransmitterIsReady(UART2));
+                UARTSendDataByte(UART2, '\n');
+
+                buffer[index++] = '\0';
+                
+                int temp_cmd = atoi(&buffer[3]);
+                cmd = (unsigned char)temp_cmd;
+                index = 0;
+                //printf(cmd);
+                //printf("I made it this far!");
+                
+                if(buffer[0] != 'M' || !(buffer[1] == '1' || buffer[1] == '2') || 
+                        !(buffer[2] == 'F' || buffer[2] == 'B') || 
+                        !(temp_cmd >= 0 && temp_cmd <= 127)) {
+                    printf("Not a valid command format. Print something of the regex M[1,2][F,B][0-127].\n");
+                }
+                else {
+                    // Motor 1
+                    if(buffer[1] == '1') {
+                        if(buffer[2] == 'F') { // Forward
+                            driveForwardM1(cmd);
+                        }
+                        else {
+                            driveBackwardsM1(cmd);
+                        }
+                    }
+                    else { // Motor 2
+                        if(buffer[2] == 'F') { // Forward
+                            driveForwardM2(cmd);
+                        }
+                        else {
+                            driveBackwardsM2(cmd);
+                        }
+                    }
+                }
+
+                for(i=0; i<MAXLENGTH; i++) {
+                    buffer[i] = '\0';
+                }
+            }
+            else {
+                if(index == MAXLENGTH - 1) {
+                    // do nothing, because the buffer is full
+                }
+                else {
+                    while(!UARTTransmitterIsReady(UART2));
+                    UARTSendDataByte(UART2, rx);
+                    buffer[index++] = rx;
+                }
+            }
+        }
+    }
+}
 
 void sendCommand(char cmd, int numArgs, ...) {
     va_list valist;
@@ -26,33 +112,33 @@ void sendCommand(char cmd, int numArgs, ...) {
     buffer[index++] = cmd;
     
     for(k=0; k<numArgs; k++) {
-        uint8_t type = va_arg(valist, uint8_t);
+        int type = va_arg(valist, int);
         
         if(type == TYPE_UINT8) {
-            buffer[index++] = va_arg(valist, uint8_t);
+            buffer[index++] = (char)va_arg(valist, int);
         }
         else if(type == TYPE_INT8) {
-            buffer[index++] = va_arg(valist, int8_t);
+            buffer[index++] = (char)va_arg(valist, int);
         }
         else if(type == TYPE_UINT16) {
-            uint16_t value = va_arg(valist, uint16_t);
+            uint16_t value = (uint16_t)va_arg(valist, int);
             buffer[index++] = value >> 8;
             buffer[index++] = value;
         }
         else if(type == TYPE_INT16) {
-            int16_t value = va_arg(valist, int16_t);
+            int16_t value = (int16_t)va_arg(valist, int);
             buffer[index++] = value >> 8;
             buffer[index++] = value;
         }
         else if(type == TYPE_UINT32) {
-            uint32_t value = va_arg(valist, uint32_t);
+            uint32_t value = (uint32_t)va_arg(valist, int);
             buffer[index++] = value >> 24;
             buffer[index++] = value >> 16;
             buffer[index++] = value >> 8;
             buffer[index++] = value;
         }
         else if(type == TYPE_INT32) {
-            int32_t value = va_arg(valist, int32_t);
+            int32_t value = (int32_t)va_arg(valist, int);
             buffer[index++] = value >> 24;
             buffer[index++] = value >> 16;
             buffer[index++] = value >> 8;
@@ -65,7 +151,13 @@ void sendCommand(char cmd, int numArgs, ...) {
     buffer[index++] = crc >> 8;
     buffer[index++] = crc;
     
-    printf("%s", buffer);
+    // send the data byte
+    int i=0;
+    while(i < index) {
+        while(!UARTTransmitterIsReady(UART1));
+        UARTSendDataByte(UART1, buffer[i]);
+        i++;
+    }
     
     va_end(valist);
 }
@@ -94,22 +186,22 @@ uint16_t crc16(unsigned char *packet, int nBytes) {
  */
 void driveForwardM1(int8_t value) {
     if(value < 0 || value > 127) { return; }
-    sendCommand(0, 1, TYPE_INT8, value );
+    sendCommand(0, 1, TYPE_INT8, (int)value );
 }
 
 void driveBackwardsM1(int8_t value) {
     if(value < 0 || value > 127) { return; }
-    sendCommand(1, 1, TYPE_INT8, value);
+    sendCommand(1, 1, TYPE_INT8, (int)value);
 }
 
 void driveForwardM2(int8_t value) {
     if(value < 0 || value > 127) { return; }
-    sendCommand(4, 1, TYPE_INT8, value);
+    sendCommand(4, 1, TYPE_INT8, (int)value);
 }
 
 void driveBackwardsM2(int8_t value) {
     if(value < 0 || value > 127) { return; }
-    sendCommand(5, 1, TYPE_INT8, value);
+    sendCommand(5, 1, TYPE_INT8, (int)value);
 }
 
 
