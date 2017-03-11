@@ -88,8 +88,6 @@ static PT_THREAD (protothread_leftPID(struct pt *pt)) {
         // disable the interrupt while computing the new PID control value
         mIC1IntEnable(0);
         
-        
-        
         // re-enable the interrupt
         mIC1IntEnable(1);
     }

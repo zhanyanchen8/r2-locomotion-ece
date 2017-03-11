@@ -8,6 +8,8 @@
       <itemPath>pt_cornell_1_2_1.h</itemPath>
       <itemPath>simplifiedSerial.h</itemPath>
       <itemPath>feedback.h</itemPath>
+      <itemPath>roboclawSimpleSerial.h</itemPath>
+      <itemPath>hardwareConfig.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -20,6 +22,7 @@
       <itemPath>simplifiedSerial.c</itemPath>
       <itemPath>feedback.c</itemPath>
       <itemPath>roboclawSimpleSerial.c</itemPath>
+      <itemPath>hardwareConfig.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -226,6 +229,7 @@
         <property key="UART1" value="true"/>
         <property key="UART2" value="true"/>
         <property key="USB" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
@@ -326,7 +330,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="roboclawSimpleSerial.c" ex="true" overriding="false">
+      <item path="roboclawSimpleSerial.c" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>

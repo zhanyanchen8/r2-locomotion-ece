@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/feedback.c</file>
+            <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/hardwareConfig.h</file>
             <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/config.h</file>
+            <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/roboclawSimpleSerial.h</file>
+            <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/hardwareConfig.c</file>
             <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/main.c</file>
+            <file>file:/C:/Users/Manish-Patel/MPLABXProjects/R2_Locomotion.X/roboclawSimpleSerial.c</file>
         </group>
     </open-files>
 </project-private>

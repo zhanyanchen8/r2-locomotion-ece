@@ -1,0 +1,2 @@
+void configPuttyUART();
+void configRoboclawUART();
