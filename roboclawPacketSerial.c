@@ -18,7 +18,7 @@ void roboclawPacketSerialPuttyInterface() {
         while(!UARTTransmitterIsReady(UART2));
         printf("Ready to receive commands.\n");
     
-        const int MAXLENGTH = 8;
+        const int MAXLENGTH = 20;
         char buffer[MAXLENGTH];
 
         int i = 0;
@@ -51,34 +51,27 @@ void roboclawPacketSerialPuttyInterface() {
 
                 buffer[index++] = '\0';
                 
-                int temp_cmd = atoi(&buffer[3]);
+                int temp_cmd = atoi(&buffer[2]);
                 cmd = (unsigned char)temp_cmd;
                 index = 0;
                 //printf(cmd);
                 //printf("I made it this far!");
                 
-                if(buffer[0] != 'M' || !(buffer[1] == '1' || buffer[1] == '2') || 
-                        !(buffer[2] == 'F' || buffer[2] == 'B') || 
-                        !(temp_cmd >= 0 && temp_cmd <= 127)) {
-                    printf("Not a valid command format. Print something of the regex M[1,2][F,B][0-127].\n");
+                if(buffer[0] != 'M' || !(buffer[1] == '1' || buffer[1] == '2')) {
+                    printf("Not a valid command format. Print something of the regex M[1,2][int].\n");
                 }
                 else {
                     // Motor 1
                     if(buffer[1] == '1') {
-                        if(buffer[2] == 'F') { // Forward
-                            driveForwardM1(cmd);
+                        driveM1SignedSpeed(temp_cmd);
+                        int x = 0;
+                        while(x < 1000000) {
+                            x++;
                         }
-                        else {
-                            driveBackwardsM1(cmd);
-                        }
+                        readRawSpeedM1();
                     }
                     else { // Motor 2
-                        if(buffer[2] == 'F') { // Forward
-                            driveForwardM2(cmd);
-                        }
-                        else {
-                            driveBackwardsM2(cmd);
-                        }
+                        driveM2SignedSpeed(temp_cmd);
                     }
                 }
 
@@ -204,4 +197,38 @@ void driveBackwardsM2(int8_t value) {
     sendCommand(5, 1, TYPE_INT8, (int)value);
 }
 
+void driveM1SignedSpeed(int vel) {
+    int QPPS = (int)(6144.0/22.0/63.5/3.14159*(float)(vel));
+    printf("%d, QPPS\n");
+    sendCommand(35, 1, TYPE_INT32, (int)vel);
+}
 
+void driveM2SignedSpeed(int vel) {
+    int QPPS = (int)(6144.0/22.0/63.5/3.14159*(float)(vel));
+    printf("%d, QPPS\n");
+    sendCommand(36, 1, TYPE_INT32, (int)vel);
+}
+
+void readRawSpeedM1() {
+    sendCommand(30, 0);
+    
+    int speed = 0;
+    int i = 0;
+    char buffer[4];
+    for(i=0; i<7; i++) {
+        while(!UARTReceivedDataIsAvailable(UART1));
+        
+        if(i == 0) {
+            speed += ((uint32_t)(UARTGetDataByte(UART1)))<<4;
+        }
+        else if(i < 4) {
+            speed += ((uint32_t)(UARTGetDataByte(UART1)))<<(4-i);
+        }
+        else {
+            uint8_t temp = UARTGetDataByte(UART1);
+        }
+    }
+    
+    printf("Speed is: %d\n", speed*300);
+    
+}
