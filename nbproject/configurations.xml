@@ -173,7 +173,7 @@
         <property key="save-temps" value="false"/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <item path="lc-addrlabels.h" ex="true" overriding="false">
+      <item path="lc-addrlabels.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -187,7 +187,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="lc-switch.h" ex="true" overriding="false">
+      <item path="lc-switch.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -201,7 +201,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="lc.h" ex="true" overriding="false">
+      <item path="lc.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -215,7 +215,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="pt-sem.h" ex="true" overriding="false">
+      <item path="pt-sem.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -243,7 +243,7 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="pt.h" ex="true" overriding="false">
+      <item path="pt.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AR>

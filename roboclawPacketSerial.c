@@ -2,6 +2,7 @@
 #include <plib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <math.h>
 #include "roboclawPacketSerial.h"
 
 // Defines
@@ -13,10 +14,105 @@
 #define TYPE_UINT32 4
 #define TYPE_INT32 5
 
-void roboclawPacketSerialPuttyInterface() {
+// Robot defines
+#define CIRCUMFERENCE (2*3.14159*63.5) // in mm
+#define TURNING_RADIUS 254.0 // in mm
+
+void moveSquare() {
+    driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, 1000, CIRCUMFERENCE, 1000);
+    turn(3.14159/2.0, CIRCUMFERENCE/4);
+    driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, 1000, CIRCUMFERENCE, 1000);
+    turn(3.14159/2.0, CIRCUMFERENCE/4);
+    driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, 1000, CIRCUMFERENCE, 1000);
+    turn(3.14159/2.0, CIRCUMFERENCE/4);
+    driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, 1000, CIRCUMFERENCE, 1000);
+    turn(3.14159/2.0, CIRCUMFERENCE/4);
+}
+
+void roboclawUARTInterface() {
     while(1) {
         while(!UARTTransmitterIsReady(UART2));
         printf("Ready to receive commands.\n");
+    
+        // buffer to read in commands
+        const int MAXLENGTH = 14;
+        char buffer[MAXLENGTH];
+        int index = 0;
+        
+        // Watchdog timer timeout in timer ticks
+        const int TIMEOUT = 16000;
+
+        while(1) {
+            
+            int i = 0;
+            int timedOut = 0;
+            index = 0;
+            clearBuffer(buffer, MAXLENGTH);
+            
+            for(i=0; i<MAXLENGTH-2; i++) {
+                // Start watchdog timer, 4 times longer than baud rate
+                OpenTimer5(T5_ON, TIMEOUT);
+                TMR5 = 0;
+                
+                // Wait for data or timer timeout
+                while(!UARTReceivedDataIsAvailable(UART2) && ReadTimer5() < TIMEOUT);
+                
+                // if timeout occurred, clear the buffer, wait for a new packet
+                if(ReadTimer5() >= TIMEOUT) {
+                    timedOut = 1;
+                    break;
+                }
+                
+                // otherwise, read the data
+                char rx = UARTGetDataByte(UART2);
+                buffer[index++] = rx;
+            }
+            
+            // if time out occurs, drop the packet
+            if(timedOut) {
+                //printf("Time out error\n");
+                continue;
+            }
+            else {
+                // send packet back
+                buffer[12] = '\n';
+                buffer[13] = 0;
+                printf(buffer);
+                
+                // parse the packet
+                if(buffer[0] != 'M' || buffer[6] != 'M' || buffer[1] !='1' || buffer[7] != '2') {
+                    // packet structure incorrect, do nothing
+                }
+                else {
+                    char M1speed[5];
+                    char M2speed[5];
+                    memcpy(M1speed, &buffer[2], 4);
+                    memcpy(M2speed, &buffer[8], 4);
+                    M1speed[4] = 0;
+                    M2speed[4] = 0;
+                    
+                    int speedM1 = atoi(M1speed);
+                    int speedM2 = atoi(M2speed);
+                    
+                    printf("%d\n", speedM1);
+                    printf("%d\n", speedM2);
+                    
+                    if(speedM1 > 250 || speedM2 > 250) {
+                        continue;
+                    }
+                    
+                    driveM1SignedSpeed(speedM1);
+                    driveM2SignedSpeed(speedM2);
+                }
+            }
+        }
+    }
+}
+
+void roboclawPacketSerialPuttyInterface() {
+    while(1) {
+        while(!UARTTransmitterIsReady(UART2));
+        //printf("Ready to receive commands.\n");
     
         const int MAXLENGTH = 20;
         char buffer[MAXLENGTH];
@@ -29,6 +125,7 @@ void roboclawPacketSerialPuttyInterface() {
         unsigned char cmd;
         int index = 0;
         while(1) {
+            
             while(!UARTReceivedDataIsAvailable(UART2));
             char rx = UARTGetDataByte(UART2);
 
@@ -63,15 +160,13 @@ void roboclawPacketSerialPuttyInterface() {
                 else {
                     // Motor 1
                     if(buffer[1] == '1') {
-                        driveM1SignedSpeed(temp_cmd);
-                        int x = 0;
-                        while(x < 1000000) {
-                            x++;
-                        }
-                        readRawSpeedM1();
+                        //driveM1SignedSpeed(temp_cmd);
+                        //driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, CIRCUMFERENCE/5.0, CIRCUMFERENCE, CIRCUMFERENCE/5.0);
+                        turn(3.14159/2.0, CIRCUMFERENCE);
                     }
                     else { // Motor 2
-                        driveM2SignedSpeed(temp_cmd);
+                        //driveM2SignedSpeed(temp_cmd);
+                        driveM1M2SignedSpeedAndDist(CIRCUMFERENCE, 2.0*CIRCUMFERENCE, CIRCUMFERENCE, 2.0*CIRCUMFERENCE);
                     }
                 }
 
@@ -180,33 +275,74 @@ uint16_t crc16(unsigned char *packet, int nBytes) {
 void driveForwardM1(int8_t value) {
     if(value < 0 || value > 127) { return; }
     sendCommand(0, 1, TYPE_INT8, (int)value );
+    char buffer[1];
+    readResponse(1, buffer);
 }
 
 void driveBackwardsM1(int8_t value) {
     if(value < 0 || value > 127) { return; }
     sendCommand(1, 1, TYPE_INT8, (int)value);
+    char buffer[1];
+    readResponse(1, buffer);
 }
 
 void driveForwardM2(int8_t value) {
     if(value < 0 || value > 127) { return; }
     sendCommand(4, 1, TYPE_INT8, (int)value);
+    char buffer[1];
+    readResponse(1, buffer);
 }
 
 void driveBackwardsM2(int8_t value) {
     if(value < 0 || value > 127) { return; }
     sendCommand(5, 1, TYPE_INT8, (int)value);
+    char buffer[1];
+    readResponse(1, buffer);
 }
 
 void driveM1SignedSpeed(int vel) {
-    int QPPS = (int)(6144.0/22.0/63.5/3.14159*(float)(vel));
+    int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
     printf("%d, QPPS\n");
-    sendCommand(35, 1, TYPE_INT32, (int)vel);
+    sendCommand(35, 1, TYPE_INT32, QPPS);
+    char buffer[1];
+    readResponse(1, buffer);
 }
 
 void driveM2SignedSpeed(int vel) {
-    int QPPS = (int)(6144.0/22.0/63.5/3.14159*(float)(vel));
+    int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
     printf("%d, QPPS\n");
-    sendCommand(36, 1, TYPE_INT32, (int)vel);
+    sendCommand(36, 1, TYPE_INT32, QPPS);
+    char buffer[1];
+    readResponse(1, buffer);
+}
+
+/*
+ * Velocity in mm/s, distance in mm. This command is buffered, so if at the end
+ * of execution the motor is still moving it will decelerate to zero velocity
+ * over 1 second. In other words, it does not compute distance traveled during
+ * the down ramp to reach the desired position. Solve this problem by adding
+ * your own ramp.
+ */
+void driveM1M2SignedSpeedAndDist(int velM1, int distM1, int velM2, int distM2) {
+    int QPPS1 = -(int)(368640.0/11/CIRCUMFERENCE*(float)(velM1));
+    int distQP1 = (int)(368640.0/11/CIRCUMFERENCE*(float)(distM1));
+    int QPPS2 = -(int)(368640.0/11/CIRCUMFERENCE*(float)(velM2));
+    int distQP2 = (int)(368640.0/11/CIRCUMFERENCE*(float)(distM2));
+        
+    // Send first command
+    sendCommand(43, 5, TYPE_INT32, QPPS1, TYPE_INT32, distQP1, 
+            TYPE_INT32, QPPS2, TYPE_INT32, distQP2, TYPE_UINT8, 0);
+    
+    // Send first command
+    sendCommand(43, 5, TYPE_INT32, 0, TYPE_INT32, 0, 
+            TYPE_INT32, 0, TYPE_INT32, 0, TYPE_UINT8, 0);
+    
+    
+    char buffer[1];
+    readResponse(1, buffer);
+    readResponse(1, buffer);
+    
+    printf("Desired distance was %d QP.\n", distQP1);
 }
 
 void readRawSpeedM1() {
@@ -214,21 +350,63 @@ void readRawSpeedM1() {
     
     int speed = 0;
     int i = 0;
-    char buffer[4];
-    for(i=0; i<7; i++) {
-        while(!UARTReceivedDataIsAvailable(UART1));
-        
-        if(i == 0) {
-            speed += ((uint32_t)(UARTGetDataByte(UART1)))<<4;
-        }
-        else if(i < 4) {
-            speed += ((uint32_t)(UARTGetDataByte(UART1)))<<(4-i);
-        }
-        else {
-            uint8_t temp = UARTGetDataByte(UART1);
-        }
+    char buffer[7];
+    
+    readResponse(7, buffer);
+    
+    for(i=0; i<4; i++) {
+        speed += ((uint32_t)(buffer[i]))<<(3-i);
     }
     
-    printf("Speed is: %d\n", speed*300);
+    if(buffer[4] == 1)
+        speed *= -1;
     
+    printf("Speed is: %d\n", speed*300);
+}
+
+/*
+ * Executes a point turn through an angle of theta. Positive theta is CCW,
+ * negative theta is CW. Theta specified in radians.
+ */
+void turn(float theta, int vel) {
+    int dist = (int)(TURNING_RADIUS*fabs(theta));
+    
+    driveM1M2SignedSpeedAndDist(-vel,dist,vel,dist);
+}
+
+void clearUART1() {
+    char rx = 0;
+    rx = UARTGetDataByte(UART1);
+    rx = UARTGetDataByte(UART1);
+    rx = UARTGetDataByte(UART1);
+}
+
+/*
+ * Read the packet sent by the Roboclaw using a 1 ms timeout for each byte
+ */
+void readResponse(int length, uint8_t* buffer) {
+    OpenTimer5(T5_ON, 65535);
+    TMR5 = 0;
+    
+    int i=0;
+    for(i=0; i<length; i++) {
+        while(!UARTReceivedDataIsAvailable(UART1) && ReadTimer5() < 65000);
+        if(ReadTimer5() > 65000) {
+            printf("Packet response timeout.\n");
+            break;
+        }
+        
+        buffer[i] = UARTGetDataByte(UART1);
+        
+        TMR5 = 0;
+    }
+    
+    CloseTimer5();
+}
+
+void clearBuffer(char* buffer, int length) {
+    int i = 0;
+    for(i=0; i<length; i++) {
+        buffer[i] = 0;
+    }
 }
