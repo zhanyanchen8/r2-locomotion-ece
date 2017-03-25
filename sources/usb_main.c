@@ -8,9 +8,7 @@
                 hardware platforms.
  Complier:      Microchip C18 (for PIC18), XC16 (for PIC24/dsPIC), XC32 (for PIC32)
  Company:       Microchip Technology, Inc.
-
  Software License Agreement:
-
  The software supplied herewith by Microchip Technology Incorporated
  (the "Company") for its PIC(R) Microcontroller is intended and
  supplied to you, the Company's customer, for use solely and
@@ -21,17 +19,14 @@
  user to criminal sanctions under applicable laws, as well as to
  civil liability for the breach of the terms and conditions of this
  license.
-
  THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
  WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
  TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
  PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE COMPANY SHALL NOT,
  IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
  CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
-
 ********************************************************************
  File Description:
-
  Change History:
   Rev   Description
   ----  -----------------------------------------
@@ -201,9 +196,10 @@ int ProcessIO(char* sourceBuffer, char* payloadBuffer, char* checksumBuffer, cha
                     readBuffer[arrayIndex++] = c;
                     if (arrayIndex == dataLength){
                         if (dataType == PAYLOAD){
-                            dataLength = (readBuffer[3]<<24) 
-                                    | (readBuffer[2]<<16) | (readBuffer[1]<<8)
-                                    | readBuffer[0];
+                            dataLength = ((uint32_t)(readBuffer[3])<<24) | 
+                                    ((uint32_t)(readBuffer[2])<<16) |
+                                    ((uint32_t)(readBuffer[1])<<8) | 
+                                    ((uint32_t)(readBuffer[0]));
                         }
                         else{
                             dataLength = c;
