@@ -32,7 +32,7 @@ void moveSquare() {
 void roboclawUARTInterface() {
     while(1) {
         while(!UARTTransmitterIsReady(UART2));
-        printf("Ready to receive commands.\n");
+        //printf("Ready to receive commands.\n");
     
         // buffer to read in commands
         const int MAXLENGTH = 14;
@@ -51,7 +51,7 @@ void roboclawUARTInterface() {
             
             for(i=0; i<MAXLENGTH-2; i++) {
                 // Start watchdog timer, 4 times longer than baud rate
-                OpenTimer5(T5_ON, TIMEOUT);
+                OpenTimer5(T5_ON, 65535);
                 TMR5 = 0;
                 
                 // Wait for data or timer timeout
@@ -77,7 +77,7 @@ void roboclawUARTInterface() {
                 // send packet back
                 buffer[12] = '\n';
                 buffer[13] = 0;
-                printf(buffer);
+                //printf(buffer);
                 
                 // parse the packet
                 if(buffer[0] != 'M' || buffer[6] != 'M' || buffer[1] !='1' || buffer[7] != '2') {
@@ -94,8 +94,8 @@ void roboclawUARTInterface() {
                     int speedM1 = atoi(M1speed);
                     int speedM2 = atoi(M2speed);
                     
-                    printf("%d\n", speedM1);
-                    printf("%d\n", speedM2);
+                    //printf("%d\n", speedM1);
+                    //printf("%d\n", speedM2);
                     
                     if(speedM1 > 250 || speedM2 > 250) {
                         continue;
@@ -156,7 +156,7 @@ void roboclawPacketSerialPuttyInterface() {
                 //printf("I made it this far!");
                 
                 if(buffer[0] != 'M' || !(buffer[1] == '1' || buffer[1] == '2')) {
-                    printf("Not a valid command format. Print something of the regex M[1,2][int].\n");
+                    //printf("Not a valid command format. Print something of the regex M[1,2][int].\n");
                 }
                 else {
                     // Motor 1
@@ -303,7 +303,7 @@ void driveBackwardsM2(int8_t value) {
 
 void driveM1SignedSpeed(int vel) {
     int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
-    printf("%d, QPPS\n");
+    //printf("%d, QPPS\n", QPPS);
     sendCommand(35, 1, TYPE_INT32, QPPS);
     char buffer[1];
     readResponse(1, buffer);
@@ -311,7 +311,7 @@ void driveM1SignedSpeed(int vel) {
 
 void driveM2SignedSpeed(int vel) {
     int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
-    printf("%d, QPPS\n");
+    //printf("%d, QPPS\n", QPPS);
     sendCommand(36, 1, TYPE_INT32, QPPS);
     char buffer[1];
     readResponse(1, buffer);
@@ -392,7 +392,7 @@ void readResponse(int length, uint8_t* buffer) {
     int i=0;
     for(i=0; i<length; i++) {
         while(!UARTReceivedDataIsAvailable(UART1) && ReadTimer5() < 65000);
-        if(ReadTimer5() > 65000) {
+        if(ReadTimer5() >= 65000) {
             printf("Packet response timeout.\n");
             break;
         }
