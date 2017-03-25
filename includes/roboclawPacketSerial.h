@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+void UARTAttempt2();
 void roboclawUARTInterface();
 void roboclawPacketSerialPuttyInterface();
 

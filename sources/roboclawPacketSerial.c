@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <math.h>
-#include "roboclawPacketSerial.h"
+#include "../includes/roboclawPacketSerial.h"
 
 // Defines
 #define ADDRESS 128
@@ -59,13 +59,37 @@ void roboclawUARTInterface() {
                 
                 // if timeout occurred, clear the buffer, wait for a new packet
                 if(ReadTimer5() >= TIMEOUT) {
+                    char clr = UARTGetDataByte(UART2);
                     timedOut = 1;
                     break;
                 }
                 
+                
                 // otherwise, read the data
                 char rx = UARTGetDataByte(UART2);
                 buffer[index++] = rx;
+                
+                // check for framing error
+                if((index > 0 && buffer[0] != 'M')) {
+                    char clr = UARTGetDataByte(UART2);
+                    timedOut = 1;
+                    break;
+                }
+                else if((index > 1 && buffer[1] != '1')) {
+                    char clr = UARTGetDataByte(UART2);
+                    timedOut = 1;
+                    break;
+                }
+                else if((index > 6 && buffer[6] != 'M')) {
+                    char clr = UARTGetDataByte(UART2);
+                    timedOut = 1;
+                    break;
+                }
+                else if((index > 7 && buffer[7] != '2')) {
+                    char clr = UARTGetDataByte(UART2);
+                    timedOut = 1;
+                    break;
+                }
             }
             
             // if time out occurs, drop the packet
@@ -306,7 +330,7 @@ void driveM1SignedSpeed(int vel) {
     printf("%d, QPPS\n", QPPS);
     sendCommand(35, 1, TYPE_INT32, QPPS);
     char buffer[1];
-    readResponse(1, buffer);
+    //readResponse(1, buffer);
 }
 
 void driveM2SignedSpeed(int vel) {
@@ -314,7 +338,7 @@ void driveM2SignedSpeed(int vel) {
     printf("%d, QPPS\n", QPPS);
     sendCommand(36, 1, TYPE_INT32, QPPS);
     char buffer[1];
-    readResponse(1, buffer);
+    //readResponse(1, buffer);
 }
 
 /*

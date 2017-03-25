@@ -1,6 +1,6 @@
 #define _SUPPRESS_PLIB_WARNING 1
 #include <plib.h>
-#include "hardwareConfig.h"
+#include "../includes/hardwareConfig.h"
 
 void configPuttyUART(){
     // specify PPS group, signal, logical pin name
