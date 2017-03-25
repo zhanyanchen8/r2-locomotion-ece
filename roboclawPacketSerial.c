@@ -51,7 +51,7 @@ void roboclawUARTInterface() {
             
             for(i=0; i<MAXLENGTH-2; i++) {
                 // Start watchdog timer, 4 times longer than baud rate
-                OpenTimer5(T5_ON, 65535);
+                OpenTimer5(T5_ON | T5_PS_1_2, 65535);
                 TMR5 = 0;
                 
                 // Wait for data or timer timeout
@@ -77,7 +77,7 @@ void roboclawUARTInterface() {
                 // send packet back
                 buffer[12] = '\n';
                 buffer[13] = 0;
-                //printf(buffer);
+                printf(buffer);
                 
                 // parse the packet
                 if(buffer[0] != 'M' || buffer[6] != 'M' || buffer[1] !='1' || buffer[7] != '2') {
@@ -303,7 +303,7 @@ void driveBackwardsM2(int8_t value) {
 
 void driveM1SignedSpeed(int vel) {
     int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
-    //printf("%d, QPPS\n", QPPS);
+    printf("%d, QPPS\n", QPPS);
     sendCommand(35, 1, TYPE_INT32, QPPS);
     char buffer[1];
     readResponse(1, buffer);
@@ -311,7 +311,7 @@ void driveM1SignedSpeed(int vel) {
 
 void driveM2SignedSpeed(int vel) {
     int QPPS = -(int)(60.0*6144.0/22.0/63.5/3.14159*(float)(vel));
-    //printf("%d, QPPS\n", QPPS);
+    printf("%d, QPPS\n", QPPS);
     sendCommand(36, 1, TYPE_INT32, QPPS);
     char buffer[1];
     readResponse(1, buffer);
@@ -383,16 +383,17 @@ void clearUART1() {
 }
 
 /*
- * Read the packet sent by the Roboclaw using a 1 ms timeout for each byte
+ * Read the packet sent by the Roboclaw using a 2 ms timeout for each byte
  */
 void readResponse(int length, uint8_t* buffer) {
-    OpenTimer5(T5_ON, 65535);
+    const int TIMEOUT = 65000;
+    OpenTimer5(T5_ON | T5_PS_1_2, 65535);
     TMR5 = 0;
     
     int i=0;
     for(i=0; i<length; i++) {
-        while(!UARTReceivedDataIsAvailable(UART1) && ReadTimer5() < 65000);
-        if(ReadTimer5() >= 65000) {
+        while(!UARTReceivedDataIsAvailable(UART1) && ReadTimer5() < TIMEOUT);
+        if(ReadTimer5() >= TIMEOUT) {
             printf("Packet response timeout.\n");
             break;
         }
