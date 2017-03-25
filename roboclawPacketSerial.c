@@ -40,7 +40,7 @@ void roboclawUARTInterface() {
         int index = 0;
         
         // Watchdog timer timeout in timer ticks
-        const int TIMEOUT = 16000;
+        const int TIMEOUT = 65000;
 
         while(1) {
             
@@ -106,6 +106,7 @@ void roboclawUARTInterface() {
                 }
             }
         }
+        
     }
 }
 
