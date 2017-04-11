@@ -347,6 +347,8 @@ void driveM2SignedSpeed(int vel) {
  * over 1 second. In other words, it does not compute distance traveled during
  * the down ramp to reach the desired position. Solve this problem by adding
  * your own ramp.
+ * 
+ * TO DO: WAIT UNTIL BOTH MOTORS DONE SPINNING BEFORE EXITING THIS FUNCTION
  */
 void driveM1M2SignedSpeedAndDist(int velM1, int distM1, int velM2, int distM2) {
     int QPPS1 = -(int)(368640.0/11/CIRCUMFERENCE*(float)(velM1));
