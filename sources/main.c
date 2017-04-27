@@ -103,6 +103,8 @@ int main(void)
         USBDeviceAttach();
     #endif
 
+    putsUSBUSART("Hello world\n");
+    
     while(1)
     {
         #if defined(USB_POLLING)
@@ -144,7 +146,8 @@ int main(void)
 //                "S: %s\n\rT: %s\n\rP: %s\n\rK: %s\n\r",
 //                    sourceBuffer, transactionBuffer,
 //                        payloadBuffer, checksumBuffer);
-            putsUSBUSART("f\n");
+            putsUSBUSART(payloadBuffer);
+            CDCTxService();
             
             if(payloadBuffer[0] != 'M' || !(payloadBuffer[1] == '1' || payloadBuffer[1] == '2')) {
                 // do nothing, payload is bad

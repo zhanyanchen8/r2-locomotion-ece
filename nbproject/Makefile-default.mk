@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=sources/hardwareConfig.c sources/main.c sources/roboclawPacketSerial.c sources/usb/usb_descriptors.c sources/usb/usb_device.c sources/usb/usb_function_cdc.c sources/usb_main.c
+SOURCEFILES_QUOTED_IF_SPACED=sources/usb/usb_descriptors.c sources/usb/usb_device.c sources/usb/usb_function_cdc.c sources/hardwareConfig.c sources/main.c sources/roboclawPacketSerial.c sources/usb_main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/sources/hardwareConfig.o ${OBJECTDIR}/sources/main.o ${OBJECTDIR}/sources/roboclawPacketSerial.o ${OBJECTDIR}/sources/usb/usb_descriptors.o ${OBJECTDIR}/sources/usb/usb_device.o ${OBJECTDIR}/sources/usb/usb_function_cdc.o ${OBJECTDIR}/sources/usb_main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/sources/hardwareConfig.o.d ${OBJECTDIR}/sources/main.o.d ${OBJECTDIR}/sources/roboclawPacketSerial.o.d ${OBJECTDIR}/sources/usb/usb_descriptors.o.d ${OBJECTDIR}/sources/usb/usb_device.o.d ${OBJECTDIR}/sources/usb/usb_function_cdc.o.d ${OBJECTDIR}/sources/usb_main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/sources/usb/usb_descriptors.o ${OBJECTDIR}/sources/usb/usb_device.o ${OBJECTDIR}/sources/usb/usb_function_cdc.o ${OBJECTDIR}/sources/hardwareConfig.o ${OBJECTDIR}/sources/main.o ${OBJECTDIR}/sources/roboclawPacketSerial.o ${OBJECTDIR}/sources/usb_main.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/sources/usb/usb_descriptors.o.d ${OBJECTDIR}/sources/usb/usb_device.o.d ${OBJECTDIR}/sources/usb/usb_function_cdc.o.d ${OBJECTDIR}/sources/hardwareConfig.o.d ${OBJECTDIR}/sources/main.o.d ${OBJECTDIR}/sources/roboclawPacketSerial.o.d ${OBJECTDIR}/sources/usb_main.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/sources/hardwareConfig.o ${OBJECTDIR}/sources/main.o ${OBJECTDIR}/sources/roboclawPacketSerial.o ${OBJECTDIR}/sources/usb/usb_descriptors.o ${OBJECTDIR}/sources/usb/usb_device.o ${OBJECTDIR}/sources/usb/usb_function_cdc.o ${OBJECTDIR}/sources/usb_main.o
+OBJECTFILES=${OBJECTDIR}/sources/usb/usb_descriptors.o ${OBJECTDIR}/sources/usb/usb_device.o ${OBJECTDIR}/sources/usb/usb_function_cdc.o ${OBJECTDIR}/sources/hardwareConfig.o ${OBJECTDIR}/sources/main.o ${OBJECTDIR}/sources/roboclawPacketSerial.o ${OBJECTDIR}/sources/usb_main.o
 
 # Source Files
-SOURCEFILES=sources/hardwareConfig.c sources/main.c sources/roboclawPacketSerial.c sources/usb/usb_descriptors.c sources/usb/usb_device.c sources/usb/usb_function_cdc.c sources/usb_main.c
+SOURCEFILES=sources/usb/usb_descriptors.c sources/usb/usb_device.c sources/usb/usb_function_cdc.c sources/hardwareConfig.c sources/main.c sources/roboclawPacketSerial.c sources/usb_main.c
 
 
 CFLAGS=
@@ -100,24 +100,6 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/sources/hardwareConfig.o: sources/hardwareConfig.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o.d 
-	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/hardwareConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/hardwareConfig.o.d" -o ${OBJECTDIR}/sources/hardwareConfig.o sources/hardwareConfig.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/sources/main.o: sources/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/main.o.d 
-	@${RM} ${OBJECTDIR}/sources/main.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/main.o.d" -o ${OBJECTDIR}/sources/main.o sources/main.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/sources/roboclawPacketSerial.o: sources/roboclawPacketSerial.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o.d 
-	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" -o ${OBJECTDIR}/sources/roboclawPacketSerial.o sources/roboclawPacketSerial.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/sources/usb/usb_descriptors.o: sources/usb/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/sources/usb" 
 	@${RM} ${OBJECTDIR}/sources/usb/usb_descriptors.o.d 
@@ -136,6 +118,24 @@ ${OBJECTDIR}/sources/usb/usb_function_cdc.o: sources/usb/usb_function_cdc.c  nbp
 	@${RM} ${OBJECTDIR}/sources/usb/usb_function_cdc.o 
 	@${FIXDEPS} "${OBJECTDIR}/sources/usb/usb_function_cdc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/usb/usb_function_cdc.o.d" -o ${OBJECTDIR}/sources/usb/usb_function_cdc.o sources/usb/usb_function_cdc.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/sources/hardwareConfig.o: sources/hardwareConfig.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o.d 
+	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/hardwareConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/hardwareConfig.o.d" -o ${OBJECTDIR}/sources/hardwareConfig.o sources/hardwareConfig.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/sources/main.o: sources/main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/main.o.d 
+	@${RM} ${OBJECTDIR}/sources/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/main.o.d" -o ${OBJECTDIR}/sources/main.o sources/main.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/sources/roboclawPacketSerial.o: sources/roboclawPacketSerial.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o.d 
+	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" -o ${OBJECTDIR}/sources/roboclawPacketSerial.o sources/roboclawPacketSerial.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/sources/usb_main.o: sources/usb_main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/sources" 
 	@${RM} ${OBJECTDIR}/sources/usb_main.o.d 
@@ -143,24 +143,6 @@ ${OBJECTDIR}/sources/usb_main.o: sources/usb_main.c  nbproject/Makefile-${CND_CO
 	@${FIXDEPS} "${OBJECTDIR}/sources/usb_main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/usb_main.o.d" -o ${OBJECTDIR}/sources/usb_main.o sources/usb_main.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
 else
-${OBJECTDIR}/sources/hardwareConfig.o: sources/hardwareConfig.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o.d 
-	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/hardwareConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/hardwareConfig.o.d" -o ${OBJECTDIR}/sources/hardwareConfig.o sources/hardwareConfig.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/sources/main.o: sources/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/main.o.d 
-	@${RM} ${OBJECTDIR}/sources/main.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/main.o.d" -o ${OBJECTDIR}/sources/main.o sources/main.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/sources/roboclawPacketSerial.o: sources/roboclawPacketSerial.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/sources" 
-	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o.d 
-	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o 
-	@${FIXDEPS} "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" -o ${OBJECTDIR}/sources/roboclawPacketSerial.o sources/roboclawPacketSerial.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/sources/usb/usb_descriptors.o: sources/usb/usb_descriptors.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/sources/usb" 
 	@${RM} ${OBJECTDIR}/sources/usb/usb_descriptors.o.d 
@@ -178,6 +160,24 @@ ${OBJECTDIR}/sources/usb/usb_function_cdc.o: sources/usb/usb_function_cdc.c  nbp
 	@${RM} ${OBJECTDIR}/sources/usb/usb_function_cdc.o.d 
 	@${RM} ${OBJECTDIR}/sources/usb/usb_function_cdc.o 
 	@${FIXDEPS} "${OBJECTDIR}/sources/usb/usb_function_cdc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/usb/usb_function_cdc.o.d" -o ${OBJECTDIR}/sources/usb/usb_function_cdc.o sources/usb/usb_function_cdc.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/sources/hardwareConfig.o: sources/hardwareConfig.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o.d 
+	@${RM} ${OBJECTDIR}/sources/hardwareConfig.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/hardwareConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/hardwareConfig.o.d" -o ${OBJECTDIR}/sources/hardwareConfig.o sources/hardwareConfig.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/sources/main.o: sources/main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/main.o.d 
+	@${RM} ${OBJECTDIR}/sources/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/main.o.d" -o ${OBJECTDIR}/sources/main.o sources/main.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/sources/roboclawPacketSerial.o: sources/roboclawPacketSerial.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/sources" 
+	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o.d 
+	@${RM} ${OBJECTDIR}/sources/roboclawPacketSerial.o 
+	@${FIXDEPS} "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/sources/roboclawPacketSerial.o.d" -o ${OBJECTDIR}/sources/roboclawPacketSerial.o sources/roboclawPacketSerial.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/sources/usb_main.o: sources/usb_main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/sources" 

@@ -123,6 +123,15 @@ int ProcessIO(char* sourceBuffer, char* payloadBuffer, char* checksumBuffer, cha
     if (RS232_Out_Data_Rdy && USBUSARTIsTxTrfReady()){
         memcpy(USB_Out_Buffer, RS232_Out_Data, LastRS232Out);
         
+        int i;
+        for (i = 0; i < LastRS232Out - 11; i++) {
+            if (USB_Out_Buffer[i] == 'M' && USB_Out_Buffer[i+1] == '1') {
+                memcpy(payloadBuffer, USB_Out_Buffer + i, 12);
+            }
+        }
+        result = 1;
+        
+        /*
         enum states {   GET_START_PREFIX, GET_START,
                         GET_HEADER, GET_LENGTH, GET_DATA, 
                         GET_END_PREFIX, GET_END};
@@ -284,6 +293,7 @@ int ProcessIO(char* sourceBuffer, char* payloadBuffer, char* checksumBuffer, cha
                     break;
             }
         }
+        */
         
         RS232_Out_Data_Rdy = 0;
     }
