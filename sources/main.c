@@ -67,6 +67,7 @@
 #include <plib.h>
 #include "../includes/hardwareConfig.h"
 #include "../includes/roboclawPacketSerial.h"
+#include "../includes/R2Protocol.h"
 #include <stdarg.h>
 
 /** C O M M A N D S ********************************************************/
@@ -93,92 +94,92 @@ static void InitializeSystem(void);
  * Note:            None
  *****************************************************************************/
 
-int main(void) {
-    SYSTEMConfigPerformance(sys_clock);
-    
-    configPuttyUART();
-    configRoboclawUART();
-    
-    //roboclawUARTInterface();
-    while(1) {
-        moveSquare();
-    }
-}
-//
-//int main(void)
-//{   
+//int main(void) {
+//    SYSTEMConfigPerformance(sys_clock);
+//    
+//    configPuttyUART();
 //    configRoboclawUART();
 //    
-//    InitializeSystem();
+//    //roboclawUARTInterface();
+//    while(1) {
+//        moveSquare();
+//    }
+//}
 //
-//    #if defined(USB_INTERRUPT)
-//        USBDeviceAttach();
-//    #endif
-//
-//    while(1)
-//    {
-//        #if defined(USB_POLLING)
-//		// Check bus status and service USB interrupts.
-//        USBDeviceTasks(); // Interrupt or polling method.  If using polling, must call
-//        				  // this function periodically.  This function will take care
-//        				  // of processing and responding to SETUP transactions 
-//        				  // (such as during the enumeration process when you first
-//        				  // plug in).  USB hosts require that USB devices should accept
-//        				  // and process SETUP packets in a timely fashion.  Therefore,
-//        				  // when using polling, this function should be called 
-//        				  // regularly (such as once every 1.8ms or faster** [see 
-//        				  // inline code comments in usb_device.c for explanation when
-//        				  // "or faster" applies])  In most cases, the USBDeviceTasks() 
-//        				  // function does not take very long to execute (ex: <100 
-//        				  // instruction cycles) before it returns.
-//        #endif
-//
-//        OpenTimer1(T1_ON | T1_PS_1_256, 0xFFFF);
-//        
-//        char sourceBuffer[30] = {0};
-//        char transactionBuffer[30] = {0};
-//        char payloadBuffer[30] = {0};
-//        char checksumBuffer[30] = {0};
-//        
-//		// Application-specific tasks.
-//		// Application related code may be added here, or in the ProcessIO() function.
-//        int result = ProcessIO(sourceBuffer, payloadBuffer, checksumBuffer, transactionBuffer);
-//        /* the buffers now contain relevant information;
-//         * they are updated if result == 1; otherwise, it's old info
-//         */
-//        
-//        char readBuffer[100];
-//        if (result){
-//            // new data available
-//            
-////            print out data obtained:
-////            sprintf(readBuffer,
-////                "S: %s\n\rT: %s\n\rP: %s\n\rK: %s\n\r",
-////                    sourceBuffer, transactionBuffer,
-////                        payloadBuffer, checksumBuffer);
-//            putsUSBUSART("f\n");
-//            
-//            if(payloadBuffer[0] != 'M' || !(payloadBuffer[1] == '1' || payloadBuffer[1] == '2')) {
-//                // do nothing, payload is bad
-//            }
-//            else {
-//                char M1speed[5];
-//                char M2speed[5];
-//                memcpy(M1speed, &payloadBuffer[2], 4);
-//                memcpy(M2speed, &payloadBuffer[8], 4);
-//                M1speed[4] = 0;
-//                M2speed[4] = 0;
-//
-//                int speedM1 = atoi(M1speed);
-//                int speedM2 = atoi(M2speed);
-//
-//                driveM1SignedSpeed(speedM1);
-//                driveM2SignedSpeed(speedM2);
-//            }
-//        }
-//        
-//    }//end while
-//}//end main
+int main(void)
+{   
+    configRoboclawUART();
+    
+    InitializeSystem();
+
+    #if defined(USB_INTERRUPT)
+        USBDeviceAttach();
+    #endif
+
+    while(1)
+    {
+        #if defined(USB_POLLING)
+		// Check bus status and service USB interrupts.
+        USBDeviceTasks(); // Interrupt or polling method.  If using polling, must call
+        				  // this function periodically.  This function will take care
+        				  // of processing and responding to SETUP transactions 
+        				  // (such as during the enumeration process when you first
+        				  // plug in).  USB hosts require that USB devices should accept
+        				  // and process SETUP packets in a timely fashion.  Therefore,
+        				  // when using polling, this function should be called 
+        				  // regularly (such as once every 1.8ms or faster** [see 
+        				  // inline code comments in usb_device.c for explanation when
+        				  // "or faster" applies])  In most cases, the USBDeviceTasks() 
+        				  // function does not take very long to execute (ex: <100 
+        				  // instruction cycles) before it returns.
+        #endif
+
+        OpenTimer1(T1_ON | T1_PS_1_256, 0xFFFF);
+        
+		// Application-specific tasks.
+		// Application related code may be added here, or in the ProcessIO() function.
+        struct R2ProtocolPacket packet;
+        uint8_t packetData[30] = {0};
+        packet.data = packetData;
+        packet.data_len = 30;
+        
+        int result = ProcessIO(&packet);
+        /* the buffers now contain relevant information;
+         * they are updated if result == 1; otherwise, it's old info
+         */
+        
+        char readBuffer[100];
+        if (result){
+            // new data available
+            
+            //print out data obtained:
+            packet.data[packet.data_len] = 0;
+            sprintf(readBuffer,
+                "%s\n",packet.data);
+            putsUSBUSART(readBuffer);
+            CDCTxService();
+            
+            if(packet.data[0] != 'M' || !(packet.data[1] == '1' || packet.data[1] == '2')) {
+                // do nothing, payload is bad
+            }
+            else {
+                char M1speed[5];
+                char M2speed[5];
+                memcpy(M1speed, &packet.data[2], 4);
+                memcpy(M2speed, &packet.data[8], 4);
+                M1speed[4] = 0;
+                M2speed[4] = 0;
+
+                int speedM1 = atoi(M1speed);
+                int speedM2 = atoi(M2speed);
+
+                driveM1SignedSpeed(speedM1);
+                driveM2SignedSpeed(speedM2);
+            }
+        }
+        
+    }//end while
+}//end main
 
 
 /********************************************************************

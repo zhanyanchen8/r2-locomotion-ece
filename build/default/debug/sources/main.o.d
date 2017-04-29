@@ -1,4 +1,4 @@
-build/default/production/sources/main.o:  \
+build/default/debug/sources/main.o:  \
 sources/main.c  \
  sources/../includes/usb/usb.h  \
 sources/../includes/usb/../Compiler.h  \
