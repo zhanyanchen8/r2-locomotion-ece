@@ -142,15 +142,22 @@ int main(void)
             
             //print out data obtained:
             packet.data[packet.data_len] = 0;
-            sprintf(readBuffer,
-                "%s\n",packet.data);
-            putsUSBUSART(readBuffer);
-            CDCTxService();
+//            sprintf(readBuffer,
+//                "%s\n",packet.data);
+//            putsUSBUSART(readBuffer);
+//            CDCTxService();
             
             if(packet.data[0] != 'M' || !(packet.data[1] == '1' || packet.data[1] == '2')) {
                 // do nothing, payload is bad
+                /*
+                 * Send error back to source?
+                 */
             }
             else {
+                /*
+                 * Parse motor velocities and send velocity commands to 
+                 * Roboclaw.
+                 */
                 char M1speed[5];
                 char M2speed[5];
                 memcpy(M1speed, &packet.data[2], 4);

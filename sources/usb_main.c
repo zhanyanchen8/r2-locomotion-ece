@@ -97,8 +97,6 @@ void loadBuffer(uint8_t* copyBuffer, uint16_t copyLength);
 int ProcessIO(struct R2ProtocolPacket *packet)
 {
     int result = 0;
-    //Blink the LEDs according to the USB device status
-    BlinkUSBStatus();
     // User Application USB tasks
     if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) return;
 
@@ -113,9 +111,11 @@ int ProcessIO(struct R2ProtocolPacket *packet)
 		}
 	}
 
+    /*
     //Check if any bytes are waiting in the queue to send to the USB host.
     //If any bytes are waiting, and the endpoint is available, prepare to
     //send the USB packet to the host.
+    */
     
     if (RS232_Out_Data_Rdy /* && USBUSARTIsTxTrfReady()*/){
         memcpy(USB_Out_Buffer, RS232_Out_Data, LastRS232Out);
