@@ -93,7 +93,7 @@ void loadBuffer(uint8_t* copyBuffer, uint16_t copyLength);
  *
  * Note:            None
  *******************************************************************/
-int ProcessIO(struct R2ProtocolPacket *packet);
+
 int ProcessIO(struct R2ProtocolPacket *packet)
 {
     int result = 0;
@@ -117,11 +117,12 @@ int ProcessIO(struct R2ProtocolPacket *packet)
     //If any bytes are waiting, and the endpoint is available, prepare to
     //send the USB packet to the host.
     
-    if (RS232_Out_Data_Rdy && USBUSARTIsTxTrfReady()){
+    if (RS232_Out_Data_Rdy /* && USBUSARTIsTxTrfReady()*/){
         memcpy(USB_Out_Buffer, RS232_Out_Data, LastRS232Out);
         if(R2ProtocolDecode(USB_Out_Buffer ,LastRS232Out, packet) != -1) {
             result = 1;
         }
+        RS232_Out_Data_Rdy = 0;
     }
 
     CDCTxService();

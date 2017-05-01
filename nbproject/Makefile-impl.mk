@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=R2_Locomotion.X
+PROJECTNAME=r2-locomotion-ece
 
 # Active Configuration
 DEFAULTCONF=default

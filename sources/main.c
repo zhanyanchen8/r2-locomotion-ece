@@ -94,18 +94,6 @@ static void InitializeSystem(void);
  * Note:            None
  *****************************************************************************/
 
-//int main(void) {
-//    SYSTEMConfigPerformance(sys_clock);
-//    
-//    configPuttyUART();
-//    configRoboclawUART();
-//    
-//    //roboclawUARTInterface();
-//    while(1) {
-//        moveSquare();
-//    }
-//}
-//
 int main(void)
 {   
     configRoboclawUART();

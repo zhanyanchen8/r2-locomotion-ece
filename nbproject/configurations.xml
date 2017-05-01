@@ -42,7 +42,6 @@
         <itemPath>sources/main.c</itemPath>
         <itemPath>sources/roboclawPacketSerial.c</itemPath>
         <itemPath>sources/usb_main.c</itemPath>
-        <itemPath>R2Protocol.c</itemPath>
         <itemPath>sources/R2Protocol.c</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -65,7 +64,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>1.40</languageToolchainVersion>
+        <languageToolchainVersion>1.34</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -80,8 +79,6 @@
           <parseOnProdLoad>false</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
-        <subordinates>
-        </subordinates>
       </compileType>
       <makeCustomizationType>
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>

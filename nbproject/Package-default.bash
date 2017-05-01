@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/R2_Locomotion.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=R2_Locomotion.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=r2locomotion.x/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/r2-locomotion-ece.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=r2-locomotion-ece.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=r2-locomotion-ece/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/r2locomotion.x/bin
+makeDirectory ${TMPDIR}/r2-locomotion-ece/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/r2locomotion.x.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/r2-locomotion-ece.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/r2locomotion.x.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/r2-locomotion-ece.tar *
 checkReturnCode
 
 # Cleanup
