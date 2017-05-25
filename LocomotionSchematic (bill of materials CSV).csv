@@ -1,0 +1,17 @@
+Component,Value,Manuf,Manuf Part No,Distrib,Distrib Part No,Qty,URL
+4WP,,see 5WP,,,,1,
+5WP,,Amphenol,68001-120HLF,Digikey,609-3401-ND,1,https://www.digikey.com/products/en?keywords=609-3401-ND
+B4B-PH JST 2mm,,JST,B4B-PH-K-S(LF)(SN),Digikey,455-1706-ND,2,https://www.digikey.com/product-detail/en/jst-sales-america-inc/B4B-PH-K-S(LF)(SN)/455-1706-ND/926613
+JST cable,,JST,A04KR04KR26E51B,Digikey,455-3147-ND,1,https://www.digikey.com/product-detail/en/jst-sales-america-inc/A04KR04KR26E51B/455-3147-ND/6194802
+C-0603,100u,,,,,1,
+C-0603,10u,,,,,3,
+C-603,.1u,,,,,7,
+C-0603,20p,,,,,2,
+LM1117IMPX-3.3/NOPB,,Texas Instruments,LM1117IMPX-3.3/NOPB,Digikey,LM1117IMPX-3.3/NOPBCT-ND,1,https://www.digikey.com/products/en?keywords=LM1117IMPX-3.3%2FNOPBCT-ND
+MAX3392E,,Maxim,MAX3392EEUD+,Digikey,MAX3392EEUD+-ND,2,https://www.digikey.com/products/en?keywords=MAX3392EEUD%2B-ND
+microUSB,,Molex,473460001,Digikey,WM17141CT-ND,1,https://www.digikey.com/product-detail/en/molex-llc/0473460001/WM17141CT-ND/1782474
+OSC_AT-8.000MAGK-T,,TXC Corporation,AT-8.000MAGK-T,Digikey,887-1599-1-ND,1,https://www.digikey.com/products/en?keywords=887-1599-1-ND
+PIC32MX250128B,,Microchip,PIC32MX250F128B-I/SO,Digikey,PIC32MX250F128B-I/SO-ND,1,https://www.digikey.com/products/en?keywords=PIC32MX250F128B-I%2FSO-ND
+R-0603,10k,Yageo,RC0603JR-0710KL,Digikey,311-10KGRCT-ND,1,https://www.digikey.com/products/en?keywords=311-10KGRCT-ND
+Roboclaw Header,,Amphenol,87606-310LF,Digikey,609-3555-ND,1,https://www.digikey.com/products/en?keywords=609-3555-ND
+Roboclaw Header 2,,Amphenol,75915-312LF,Digikey,609-3553-ND,1,https://www.digikey.com/product-detail/en/amphenol-fci/75915-312LF/609-3553-ND/1523671
