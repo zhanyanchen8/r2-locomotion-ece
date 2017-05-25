@@ -4,9 +4,9 @@ Component,Value,Manuf,Manuf Part No,Distrib,Distrib Part No,Qty,URL
 B4B-PH JST 2mm,,JST,B4B-PH-K-S(LF)(SN),Digikey,455-1706-ND,2,https://www.digikey.com/product-detail/en/jst-sales-america-inc/B4B-PH-K-S(LF)(SN)/455-1706-ND/926613
 JST cable,,JST,A04KR04KR26E51B,Digikey,455-3147-ND,1,https://www.digikey.com/product-detail/en/jst-sales-america-inc/A04KR04KR26E51B/455-3147-ND/6194802
 C-0603,100u,,,,,1,
-C-0603,10u,,,,,3,
-C-603,.1u,,,,,7,
-C-0603,20p,,,,,2,
+C-0603,10u,Yageo,CC0603MRX5R5BB106,Digikey,311-1448-2-ND,3,https://www.digikey.com/product-detail/en/yageo/CC0603MRX5R5BB106/311-1448-2-ND/2833613
+C-603,.1u,Yageo,CC0603ZRY5V9BB104,Digikey,311-1343-2-ND,7,https://www.digikey.com/products/en?keywords=311-1343-2-ND
+C-0603,20p,Johanson Tech,251R14S200GV4T,Digikey,712-1329-1-ND,2,https://www.digikey.com/product-detail/en/johanson-technology-inc/251R14S200GV4T/712-1329-1-ND/1786791
 LM1117IMPX-3.3/NOPB,,Texas Instruments,LM1117IMPX-3.3/NOPB,Digikey,LM1117IMPX-3.3/NOPBCT-ND,1,https://www.digikey.com/products/en?keywords=LM1117IMPX-3.3%2FNOPBCT-ND
 MAX3392E,,Maxim,MAX3392EEUD+,Digikey,MAX3392EEUD+-ND,2,https://www.digikey.com/products/en?keywords=MAX3392EEUD%2B-ND
 microUSB,,Molex,473460001,Digikey,WM17141CT-ND,1,https://www.digikey.com/product-detail/en/molex-llc/0473460001/WM17141CT-ND/1782474
