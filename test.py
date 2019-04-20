@@ -11,6 +11,7 @@ import traceback
 import readchar
 import sys
 import json
+import terabee
 from threading import Thread
 
 sys.path.insert(0, "../../protocol/reference")
@@ -136,82 +137,120 @@ last = time.time()
 last_executed = time.time()
 interval = 5.0
 last_moved = -2
-while True:
-        #global voice_data
-        global lidar_data
-        time.sleep(0.1)
-        #print (voice_data)
-        
-        x = 0
-        y = 0
-        
-        ch = readchar.readchar()
-        if ch == 'x':
-            print ("exit")
-            sys.exit()
-        if ch == 'w':
-            x = -1
-            y = -1
-        if ch == 's':
-            x = 1
-            y = 1
-        if ch == 'a':
-            x = 1
-            y = -1
-        if ch == 'd':
-            x = -1
-            y = 1
-        
-        if int(lidar_data) == 1:
-            print("stop")
+
+def run(ch, distance): 
+    while True:
+            #global voice_data
+            global lidar_data
+            time.sleep(0.1)
+            #print (voice_data)
+            
             x = 0
             y = 0
-        '''
-        if int(voice_data) == 1 and int(time.time() - last_executed) > int(interval) and last_moved != 1:
-            print ('vader')
-            x = -1
-            y = -1
-            last_executed = time.time()
-            last_moved = 1
-        if int(voice_data) == 2 and time.time() - last_executed > interval and last_moved != 2:
-            x = 1
-            y = 1
-            last_executed = time.time()
-            last_moved = 2
-        if int(voice_data) == 3 and time.time() - last_executed > interval and last_moved != 3:
-            last_moved = 3
-            x = 1
-            y = -1
-            last_executed = time.time()
-        if int(voice_data) == 4 and time.time() - last_executed > interval and last_moved != 4:
-            last_moved = 4
-            x = -1
-            y = 1
-            last_executed = time.time()
+            
+            #ch = readchar.readchar()
+            if ch == 'x':
+                print ("exit")
+                sys.exit()
+            if ch == 'w':
+                x = -1
+                y = -1
+            if ch == 's':
+                x = 1
+                y = 1
+            if ch == 'a':
+                x = 1
+                y = -1
+            if ch == 'd':
+                x = -1
+                y = 1
+            
+            if int(lidar_data) == 1:
+                print("stop")
+                x = 0
+                y = 0
+            '''
+            if int(voice_data) == 1 and int(time.time() - last_executed) > int(interval) and last_moved != 1:
+                print ('vader')
+                x = -1
+                y = -1
+                last_executed = time.time()
+                last_moved = 1
+            if int(voice_data) == 2 and time.time() - last_executed > interval and last_moved != 2:
+                x = 1
+                y = 1
+                last_executed = time.time()
+                last_moved = 2
+            if int(voice_data) == 3 and time.time() - last_executed > interval and last_moved != 3:
+                last_moved = 3
+                x = 1
+                y = -1
+                last_executed = time.time()
+            if int(voice_data) == 4 and time.time() - last_executed > interval and last_moved != 4:
+                last_moved = 4
+                x = -1
+                y = 1
+                last_executed = time.time()
 
-        if time.time() - last > 180:
-            print ("exit")
-            sys.exit()
-		'''
-        print(x)
-        print(y)
-        ls = int(255 * clamp(float(x*50), -1.0, 1.0))
-        rs = int(255 * clamp(float(y*50), -1.0, 1.0))
-        send_data = R2Protocol.encode(b"BM", struct.pack("4B",
-            dir(ls), clamp(abs(ls), 25, 230),
-            dir(rs), clamp(abs(rs), 25, 230)))
+            if time.time() - last > 180:
+                print ("exit")
+                sys.exit()
+                    '''
+            motor_command(x, y)
+            while move_distance(ch, distance) == True:
+                delay = True
+            x = 0
+            y = 0
+            motor_command(x, y) #stop
+
+def motor_command(x, y):
+    print(x)
+    print(y)
+    global motors
+    ls = int(255 * clamp(float(x*50), -1.0, 1.0))
+    rs = int(255 * clamp(float(y*50), -1.0, 1.0))
+    send_data = R2Protocol.encode(b"BM", struct.pack("4B",
+        dir(ls), clamp(abs(ls), 25, 230),
+        dir(rs), clamp(abs(rs), 25, 230)))
+
+    #print (send_data)
+    motors.write(send_data)
+
+def move_distance(ch, distance):
+    sensors_data = terabee.check_distance()
+    sensors_data2 = terabee2.check_distance2()
+    if ch == 'w':
+        if sensors_data[0] < 200 or sensors_data[1] < 200 or sensors_data[2] < 200 or sensors_data[7] < 200:
+        return False
+        for i in range(0,8):
+            if sensors_data2[i] < 200:
+                return False
+        if sensors_data[0] < distance or sensors_data[1] < distance:
+            return False
+        if sensors_data2[1] < distance or sensors_data2[2] < distance or sensors_data2[5] < distance or sensors_data2[6] < distance:
+            return False
+    elif ch == 's':
+        if sensors_data[3] < 200 or sensors_data[4] < 200 or sensors_data[5] < 200 or sensors_data[6] < 200:
+            return False
+        if sensors_data[5] < distance or sensors_data[4] < distance:
+            return False
+    elif ch == 'd':
+        if sensors_data[1] < 200 or sensors_data[2] < 200 or sensors_data[3] < 200 or sensors_data[4] < 200:
+            return False
+        if sensors_data2[2] < 200 or sensors_data2[3] < 200 or sensors_data2[6] < 200 or sensors_data2[7] < 200:
+            return False
+        if sensors_data[2] < distance or sensors_data[3] < distance:
+            return False
+        if sensors_data2[3] < distance or sensors_data2[7] < distance:
+            return False
+    elif ch == 'a':
+        if sensors_data[0] < 200 or sensors_data[7] < 200 or sensors_data[6] < 200 or sensors_data[5] < 200:
+            return False
+        if sensors_data2[0] < 200 or sensors_data2[1] < 200 or sensors_data2[4] < 200 or sensors_data2[5] < 200:
+            return False
+        if sensors_data[7] < distance or sensors_data[6] < distance:
+            return False
+        if sensors_data2[0] < distance or sensors_data2[4] < distance:
+            return False
+    return True
     
-        #print (send_data)
-        motors.write(send_data)
-        time.sleep(2)
-        x = 0
-        y = 0
-        ls = int(255 * clamp(float(x*50), -1.0, 1.0))
-        rs = int(255 * clamp(float(y*50), -1.0, 1.0))
-        send_data = R2Protocol.encode(b"BM", struct.pack("4B",
-            dir(ls), clamp(abs(ls), 25, 230),
-            dir(rs), clamp(abs(rs), 25, 230)))
-    
-        #print (send_data)
-        motors.write(send_data)
-        

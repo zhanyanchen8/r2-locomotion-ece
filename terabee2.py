@@ -8,9 +8,9 @@ import serial
 import binascii
 import time
 
-def check_distance():
+def check_distance2():
 
-    port_name = "/dev/ttyACMPort0" #check port name
+    port_name = "/dev/ttyACMPort1" #check port name
     multiflex = serial.Serial(port_name, 115200, timeout=10, writeTimeout=5)
 
     print 'Connected to TeraRanger MultiFlex'
@@ -43,8 +43,14 @@ def check_distance():
         tab2 = mf_str_data.find('\t', tab+1)
         sensors_data.append(mf_str_data[tab+1:tab2])
         tab = tab2
+        if sensors_data[x] == '-1':
+            sensors_data[x] = '5000' #out of range
         print(x+1, sensors_data[x])
+        sensors_data[x] = int(sensors_data[x])
     sensors_data.append(mf_str_data[tab2+1:])
+    if sensors_data[7] == '-1':
+        sensors_data[7] = '5000' #out of range
+    sensors_data[7] = int(sensors_data[7])
     print(8, sensors_data[7])
     return sensors_data
 
