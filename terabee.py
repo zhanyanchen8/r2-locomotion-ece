@@ -10,7 +10,7 @@ import time
 
 def check_distance():
 
-    port_name = "/dev/ttyACMPort0" #check port name
+    port_name = "/dev/terabee1" #check port name
     multiflex = serial.Serial(port_name, 115200, timeout=10, writeTimeout=5)
 
     print 'Connected to TeraRanger MultiFlex'
