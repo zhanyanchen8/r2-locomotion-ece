@@ -257,4 +257,4 @@ def move_distance(ch, distance):
             '''
     return True
 
-run('s', 5)
+run('w', 5)
