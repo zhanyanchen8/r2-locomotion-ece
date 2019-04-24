@@ -30,7 +30,7 @@ def check_distance():
         print ('NACK')
 
     sensors_data = []
-    mf_str_data = str(multiflex.read(80).encode('utf-8'))
+    mf_str_data = multiflex.read(80)
     start_index = mf_str_data.find(b'M')
     print(start_index)
     end_index = mf_str_data.find(b'\r', start_index)
@@ -44,9 +44,13 @@ def check_distance():
         sensors_data.append(mf_str_data[tab+1:tab2])
         tab = tab2
         print(x+1, sensors_data[x])
+        intdata = int(sensors_data[x].decode('utf-8'))
+        sensors_data[x] = intdata
     sensors_data.append(mf_str_data[tab2+1:])
     print(8, sensors_data[7])
-    return sensors_data
+    intdata = int(sensors_data[7].decode('utf-8'))
+    sensors_data[7] = intdata
+    return sensors_data	
 
 
     multiflex.close()
