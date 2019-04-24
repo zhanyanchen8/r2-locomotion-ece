@@ -2,7 +2,7 @@
 """
 Example TeraRanger MultiFlex configuration script
 """
-from r2_protocol import *
+#from r2_protocol import *
 import sys
 import serial
 import binascii
@@ -24,10 +24,10 @@ def check_distance():
     response = binascii.hexlify(response)
 
     if response.find("52451100d4".encode('utf-8')) != -1:
-        print 'ACK'
+        print('ACK')
 
     if response.find("5245110027".encode('utf-8')) != -1:
-        print 'NACK'
+        print ('NACK')
 
     sensors_data = []
     mf_str_data = str(multiflex.read(80).encode('utf-8'))
