@@ -17,7 +17,7 @@ from threading import Thread
 sys.path.insert(0, "../../protocol/reference")
 import R2Protocol2 as R2Protocol
 
-'''
+'''comment
 HOST = '0.0.0.0'
 PORT = 10000
 voice_data = -1
@@ -153,8 +153,8 @@ def run(ch, distance):
                 print ("exit")
                 sys.exit()
             if ch == 'w':
-                x = -1
-                y = -1
+                x = 0 # -1
+                y = 0 # -1
             if ch == 's':
                 x = 1
                 y = 1
@@ -165,11 +165,11 @@ def run(ch, distance):
                 x = -1
                 y = 1
             
-            if int(lidar_data) == 1:
+            '''if int(lidar_data) == 1:
                 print("stop")
                 x = 0
                 y = 0
-            '''
+            
             if int(voice_data) == 1 and int(time.time() - last_executed) > int(interval) and last_moved != 1:
                 print ('vader')
                 x = -1
@@ -213,22 +213,24 @@ def motor_command(x, y):
         dir(ls), clamp(abs(ls), 25, 230),
         dir(rs), clamp(abs(rs), 25, 230)))
 
-    #print (send_data)
+    print (send_data)
     motors.write(send_data)
 
 def move_distance(ch, distance):
     sensors_data = terabee.check_distance()
-    sensors_data2 = terabee2.check_distance2()
+    #sensors_data2 = terabee2.check_distance2()
     if ch == 'w':
-        if sensors_data[0] < 200 or sensors_data[1] < 200 or sensors_data[2] < 200 or sensors_data[7] < 200:
-        return False
-        for i in range(0,8):
+        if sensors_data[0] < 5  or sensors_data[1] < 5 or sensors_data[2] < 5 or sensors_data[7] < 5:
+            return False
+        '''for i in range(0,8):
             if sensors_data2[i] < 200:
                 return False
+                '''
         if sensors_data[0] < distance or sensors_data[1] < distance:
             return False
-        if sensors_data2[1] < distance or sensors_data2[2] < distance or sensors_data2[5] < distance or sensors_data2[6] < distance:
+        '''if sensors_data2[1] < distance or sensors_data2[2] < distance or sensors_data2[5] < distance or sensors_data2[6] < distance:
             return False
+        
     elif ch == 's':
         if sensors_data[3] < 200 or sensors_data[4] < 200 or sensors_data[5] < 200 or sensors_data[6] < 200:
             return False
@@ -252,5 +254,7 @@ def move_distance(ch, distance):
             return False
         if sensors_data2[0] < distance or sensors_data2[4] < distance:
             return False
+            '''
     return True
-    
+
+run('s', 5)
