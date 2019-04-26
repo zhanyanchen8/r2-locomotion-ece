@@ -172,26 +172,6 @@ def run(ch, distance):
             y = 0
             '''
             #ch = readchar.readchar()
-            if ch == 'x':
-                print ("exit")
-                sys.exit()
-            if ch == 'w':
-                x = -1
-                y = -1
-            if ch == 's':
-                x = 1
-                y = 1
-            if ch == 'a':
-                x = 1
-                y = -1
-            if ch == 'd':
-                x = -1
-                y = 1
-            
-            if int(lidar_data) == 1:
-                print("stop")
-                x = 0
-                y = 0
             
             if int(voice_data) == 1 and int(time.time() - last_executed) > int(interval) and last_moved != 1:
                 print ('vader')
@@ -226,6 +206,32 @@ def run(ch, distance):
                 degree = -1
             x = joy.leftX()
             y = joy.leftY()
+            if ch == 'x':
+                x = 0
+                y = 0
+            if ch == 'w':
+                x = -1
+                y = -1
+            if ch == 's':
+                x = 1
+                y = 1
+            if ch == 'a':
+                x = 1
+                y = -1
+            if ch == 'd':
+                x = -1
+                y = 1
+            if ch == 'h':
+                head_command(1)
+                time.sleep(1)
+                head_command(-1)
+                time.sleep(1)
+                head_command(0)
+            
+            if int(lidar_data) == 1:
+                print("stop")
+                x = 0
+                y = 0
             motor_command(x, y)
             head_command(degree)
             '''
