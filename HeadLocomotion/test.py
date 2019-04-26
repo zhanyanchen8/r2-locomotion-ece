@@ -219,6 +219,7 @@ def run(ch, distance):
                 print ("exit")
                 sys.exit()
                    '''
+            print("in run")
             if joy.rightTrigger() > 0:
                 degree = 1
             if joy.leftTrigger() > 0:
