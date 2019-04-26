@@ -257,4 +257,3 @@ def motor_command(x, y):
     motors.write(send_data)
 
 
-run('w', 5)
