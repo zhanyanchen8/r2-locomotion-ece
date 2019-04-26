@@ -311,6 +311,7 @@ def main():
 						if (word in fndictGreetingsKeys):	
 							print(fndictGreetings[word](methodcnt))
 							print ("in fndictGreetingKeys")
+							test.run('h',1)
 							break
 						
 						elif (word in fndictGetItemsKeys):
