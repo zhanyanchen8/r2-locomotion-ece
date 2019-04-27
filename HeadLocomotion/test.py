@@ -88,8 +88,8 @@ last_moved = -2
 
 #lidar
 HOST = '0.0.0.0'
-PORT = 10000
-voice_data = -1
+PORT = 11000
+lidar_data = -1
 class ListenThread(Thread):
     def __init__(self):
         Thread.__init__(self)
@@ -110,7 +110,7 @@ class ListenThread(Thread):
             try:
                 global lidar_data
                 lidar_data = (data.decode())
-                print("lidar ")
+                print("lidar_data ")
                 print(lidar_data)
             except Exception as e:
                 print (e)
