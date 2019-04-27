@@ -6,6 +6,7 @@ File Created by Yanchen Zhan '22 (yz366)
 
 ### import respective packages
 import sys
+import test
 #import speech_recognition as sr
 #import pyaudio
 import nltk
@@ -130,6 +131,7 @@ def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 		setup_bool = True
 	else:"""
 	print ("waving")
+	test.run('h',1)
 	#	react_with_sound(confirmation_final)
 	return 0
 	
