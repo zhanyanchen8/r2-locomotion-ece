@@ -6,7 +6,6 @@ File Created by Yanchen Zhan '22 (yz366)
 
 ### import respective packages
 import sys
-import test
 #import speech_recognition as sr
 #import pyaudio
 import nltk
@@ -76,7 +75,7 @@ def react_with_sound (sentiment_value):
 	print ("about to play sound...")
 	
 	#lead_folder = "/home/pi/r2-tablet_GUI/R2FinalSounds/"
-	lead_folder = "R2FinalSounds/"
+	lead_folder = "/home/yanchen-zhan/Documents/Cornell-Cup/r2-voice_recognition/Final/R2FinalSounds/"
 	#lead_folder = "C:\PythonProjects\\r2-voice_recognition\Final\R2FinalSounds\\"
 	sounds = {"confirmation":"R2OK.wav" , "wake up":"R2Awake.wav" , "angry":"R2Angry.wav" , "good":"R2Good.wav" , \
 	"happy":"R2Happy.wav" , "neutral":"R2Neutral.wav" , "sad":"R2Sad.wav" , \
@@ -125,22 +124,22 @@ def stop():
 	sys.exit()
 		
 def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
-	global setup_bool
+	"""global setup_bool
 	# initial bootup
 	if (setup_bool == False or methodcnt == False):
 		setup_bool = True
-	else:
-		print ("waving")
-		test.run('h',1)
+	else:"""
+	print ("waving")
 	#	react_with_sound(confirmation_final)
 	return 0
 	
 def greet(methodcnt):
-	global setup_bool
+	"""global setup_bool
 	if (setup_bool == False or methodcnt == False):
 		setup_bool = True
-	else:
-		print ("greeting, don't forget to wave")
+	else:"""
+	print ("greeting, don't forget to wave")
+	wave(methodcnt)
 	#	react_with_sound(confirmation_final)
 	return 1
 
@@ -157,9 +156,9 @@ def take_attendance(methodcnt):
 	return 2
 		
 def grab_item(item, methodcnt):
-	global setup_bool
+	"""global setup_bool
 	if (setup_bool == False or methodcnt == False):
-		setup_bool = True
+		setup_bool = True"""
 	if (item == "periscope"):
 		open_periscope()
 	elif (item == "nerf" or "gun" in item):
@@ -311,7 +310,6 @@ def main():
 						if (word in fndictGreetingsKeys):	
 							print(fndictGreetings[word](methodcnt))
 							print ("in fndictGreetingKeys")
-							test.run('h',1)
 							break
 						
 						elif (word in fndictGetItemsKeys):
