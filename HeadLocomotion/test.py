@@ -134,7 +134,7 @@ def run(ch, distance):
                 y = 0
             motor_command(x, y)
             head_command(degree)
-'''
+
 def head_command(degree):
     print(degree)
     global motors
