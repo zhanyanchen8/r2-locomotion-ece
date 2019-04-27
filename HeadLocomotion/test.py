@@ -158,7 +158,6 @@ def run(ch, distance):
                 head_command(-1)
                 time.sleep(1)
                 head_command(0)
-            lidar_data = (data.decode())
             print("lidar in run")
             print(lidar_data)
             if int(lidar_data) == 1:
