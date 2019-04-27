@@ -86,6 +86,38 @@ last_executed = time.time()
 interval = 5.0
 last_moved = -2
 
+#lidar
+HOST = '0.0.0.0'
+PORT = 10000
+voice_data = -1
+class ListenThread(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+    def run(self):
+        self.recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.recvSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.recvSocket.bind((HOST, PORT))
+        self.recvSocket.listen(0)
+        conn, addr = self.recvSocket.accept()
+        print(conn,addr)
+        print('Connected by', addr)
+        while True:
+            data = conn.recv(1024)
+            # data = json.loads(data1.decode('utf-8'))
+            if not data:
+                break
+                print("Here")
+            try:
+                global lidar_data
+                lidar_data = (data.decode())
+                print("lidar ")
+                print(lidar_data)
+            except Exception as e:
+                print (e)
+thread = ListenThread()
+thread.start()
+
+
 def run(ch, distance):
     # Instantiate the controller
     joy = xbox.Joystick()
@@ -127,6 +159,7 @@ def run(ch, distance):
                 time.sleep(1)
                 head_command(0)
             lidar_data = (data.decode())
+            print("lidar in run")
             print(lidar_data)
             if int(lidar_data) == 1:
                 print("stop")
