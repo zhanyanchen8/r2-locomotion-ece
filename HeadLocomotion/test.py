@@ -38,79 +38,6 @@ def showIf(boolean, ifTrue, ifFalse=" "):
 sys.path.insert(0, "../../../protocol/reference")
 import R2Protocol2 as R2Protocol
 
-'''
-HOST = '0.0.0.0'
-PORT = 10000
-voice_data = -1
-
-
-
-class ListenThread(Thread):
-    def __init__(self):
-        Thread.__init__(self)
-
-
-    def run(self):
-        self.recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.recvSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.recvSocket.bind((HOST, PORT))
-        self.recvSocket.listen(0)
-        conn, addr = self.recvSocket.accept()
-        print(conn,addr)
-        print('Connected by', addr)
-        while True:
-            data = conn.recv(1024)
-            # data = json.loads(data1.decode('utf-8'))
-            if not data:
-                break
-                print("Here")
-            try:
-                global voice_data
-                voice_data = (data.decode())
-            except Exception as e:
-                print (e)
-
-thread = ListenThread()
-thread.start()
-
-
-HOST = '0.0.0.0'
-PORT = 11000
-lidar_data = -1
-
-
-
-class ListenThread(Thread):
-    def __init__(self):
-        Thread.__init__(self)
-
-
-    def run(self):
-        self.recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.recvSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.recvSocket.bind((HOST, PORT))
-        self.recvSocket.listen(0)
-        conn, addr = self.recvSocket.accept()
-        print(conn,addr)
-        print('Connected by', addr)
-        while True:
-            data = conn.recv(1024)
-            # data = json.loads(data1.decode('utf-8'))
-            if not data:
-                break
-                print("Here")
-            try:
-                global lidar_data
-                lidar_data = (data.decode())
-                print(lidar_data)
-            except Exception as e:
-                print (e)
-
-thread = ListenThread()
-thread.start()
-
-'''
-
 #TCP_IP = '0.0.0.0'
 #TCP_PORT = 9000
 #BUFFER_SIZE = 64
@@ -170,35 +97,7 @@ def run(ch, distance):
             degree = 0
             x = 0
             y = 0
-            '''
-            #ch = readchar.readchar()
             
-            if int(voice_data) == 1 and int(time.time() - last_executed) > int(interval) and last_moved != 1:
-                print ('vader')
-                x = -1
-                y = -1
-                last_executed = time.time()
-                last_moved = 1
-            if int(voice_data) == 2 and time.time() - last_executed > interval and last_moved != 2:
-                x = 1
-                y = 1
-                last_executed = time.time()
-                last_moved = 2
-            if int(voice_data) == 3 and time.time() - last_executed > interval and last_moved != 3:
-                last_moved = 3
-                x = 1
-                y = -1
-                last_executed = time.time()
-            if int(voice_data) == 4 and time.time() - last_executed > interval and last_moved != 4:
-                last_moved = 4
-                x = -1
-                y = 1
-                last_executed = time.time()
-
-            if time.time() - last > 180:
-                print ("exit")
-                sys.exit()
-                   '''
             print("in run")
             if joy.rightTrigger() > 0:
                 degree = 1
@@ -227,17 +126,14 @@ def run(ch, distance):
                 head_command(-1)
                 time.sleep(1)
                 head_command(0)
-            
+            lidar_data = (data.decode())
+            print(lidar_data)
             if int(lidar_data) == 1:
                 print("stop")
                 x = 0
                 y = 0
             motor_command(x, y)
             head_command(degree)
-            '''
-            x = 0
-            y = 0
-            motor_command(x, y) #stop
 
       '''
 def head_command(degree):
